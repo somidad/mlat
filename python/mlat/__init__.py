@@ -47,7 +47,7 @@ class MLAT:
 
                 estimator_next = estimator - delta
                 for j in range(n):
-                    ranges[j] = MLAT.__d(anchors[j, :], estimator)
+                    ranges[j] = MLAT.__d(anchors[j, :], estimator_next)
                 error_next = MLAT.__d(ranges_in, ranges)
                 if error_next < error:
                     estimator = estimator_next
