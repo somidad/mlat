@@ -39,7 +39,7 @@ class MLAT:
                     ranges[j] = MLAT.__d(anchors[j, :], estimator)
                 error = MLAT.__d(ranges_in, ranges)
 
-                delta = np.zeros(3)
+                delta = np.zeros(dim)
                 for j in range(n):
                     delta += (ranges_in[j] - ranges[j]) / ranges[j] * \
                              (estimator - anchors[j, :])
