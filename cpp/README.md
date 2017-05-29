@@ -5,6 +5,7 @@ This is a C++ namespace for 2D or 3D multilateration using gradient descent.
 ## Requirements
 
 - C++ 11 or later
+- Eigen3
 
 ## Usage
 
