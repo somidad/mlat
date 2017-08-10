@@ -1,3 +1,4 @@
+#include <chrono>
 #include <iostream>
 #include <random>
 
@@ -6,6 +7,7 @@
 #include "mlat.h"
 
 using namespace std;
+using namespace std::chrono;
 using namespace Eigen;
 using namespace mlat;
 
@@ -32,8 +34,12 @@ int main() {
     ranges_with_error(i) = ranges(i) + 2 * error * (randunif(rande) - 0.5);
   }
 
+  auto time_start = steady_clock::now();
   MLAT::GdescentResult gdescent_result = MLAT::mlat(anchors,
                                                     ranges_with_error);
+  auto time_end = steady_clock::now();
+  auto time_elapsed = duration_cast<milliseconds>(time_end - time_start);
+  cout << "Finished in " << time_elapsed.count() << " ms" << endl;
 
   cout << "Anchors" << endl;
   cout << anchors <<endl;

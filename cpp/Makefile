@@ -11,3 +11,6 @@ $(obj): mlat.cc
 
 clean:
 	rm -f demo mlat.h.gch mlat.o
+
+.PHONY: clean
+
