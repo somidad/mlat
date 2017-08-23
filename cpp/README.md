@@ -7,6 +7,10 @@ This is a C++ namespace for 2D or 3D multilateration using gradient descent.
 - C++ 11 or later
 - Eigen3
 
+```sh
+[sudo] apt-get install libeigen3-dev
+```
+
 ## Usage
 
 ```cpp
