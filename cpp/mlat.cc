@@ -39,7 +39,7 @@ namespace mlat {
 
     Eigen::ArrayXXd bounds_in_copy;
     if (bounds_in.rows() == 0) {
-      bounds_in_copy = Eigen::ArrayXXd::Zero(1, dim);
+      bounds_in_copy = Eigen::ArrayXXd::Zero(0, dim);
     } else {
       bounds_in_copy = bounds_in;
     }
