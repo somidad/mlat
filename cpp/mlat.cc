@@ -11,6 +11,14 @@ namespace mlat {
     error = Eigen::ArrayXd::Zero(n);
   }
 
+  Eigen::VectorXd getRowAsVector(Eigen::MatrixXd mat, int i) {
+    auto mrow = mat.row(i);
+    Eigen::VectorXd row(Eigen::Map<Eigen::VectorXd>(
+                                                mrow.data(),
+                                                mrow.cols() * mrow.rows()));
+    return row;
+  }
+
   double
   MLAT::d(Eigen::VectorXd p1, Eigen::VectorXd p2) {
     return (p1 - p2).norm();
@@ -61,20 +69,23 @@ namespace mlat {
       auto time_start = std::chrono::steady_clock::now();
       while (true) {
         for (int j = 0; j < n; j++) {
-          ranges(j) = d(anchors_in.row(j), estimator);
+          auto row = getRowAsVector(anchors_in, j);
+          ranges(j) = d(row, estimator);
         }
         double error = d(ranges_in, ranges);
 
         Eigen::VectorXd delta = Eigen::VectorXd::Zero(dim);;
         for (int j = 0; j < n; j++) {
+          auto row = getRowAsVector(anchors_in, j);
           delta += (ranges_in(j) - ranges(j)) / ranges(j)
-                    * (estimator - Eigen::VectorXd(anchors_in.row(j)));
+                    * (estimator - row);
         }
         delta *= 2 * alpha;
 
         Eigen::VectorXd estimator_next(estimator - delta);
         for (int j = 0; j < n; j++) {
-          ranges(j) = d(anchors_in.row(j), estimator_next);
+          auto row = getRowAsVector(anchors_in, j);
+          ranges(j) = d(row, estimator_next);
         }
         double error_next = d(ranges_in, ranges);
         if (error_next < error) {
