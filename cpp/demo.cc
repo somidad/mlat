@@ -22,6 +22,7 @@ int main() {
              W, 0, H,
              W, L, H,
              0, L, H;
+
   VectorXd node(3);
   node << W * randunif(rande),
           L * randunif(rande),
@@ -33,16 +34,10 @@ int main() {
     ranges(i) = (VectorXd(anchors.row(i)) - node).norm();
     ranges_with_error(i) = ranges(i) + 2 * error * (randunif(rande) - 0.5);
   }
-  Egien:MatrixXd bounds(2, 3);
-  bounds << 0, 0, 0, // Minimum value of OBSERVED anchors' position
-            W, L, 2; // Maximum vlaue of OBSERVED anchors' position
-                     // Note that 0 and 2 denote
-                     // an interval of interest (maybe human height)
 
   auto time_start = steady_clock::now();
   MLAT::GdescentResult gdescent_result = MLAT::mlat(anchors,
-                                                    ranges_with_error,
-                                                    bounds);
+                                                    ranges_with_error);
   auto time_end = steady_clock::now();
   auto time_elapsed = duration_cast<milliseconds>(time_end - time_start);
   cout << "Finished in " << time_elapsed.count() << " ms" << endl;

@@ -13,9 +13,10 @@ namespace mlat {
 
   Eigen::VectorXd getRowAsVector(Eigen::MatrixXd mat, int i) {
     auto mrow = mat.row(i);
-    Eigen::VectorXd row(Eigen::Map<Eigen::VectorXd>(
-                                                mrow.data(),
-                                                mrow.cols() * mrow.rows()));
+    Eigen::VectorXd row(mrow.size());
+    for (int i = 0; i < mrow.size(); i++) {
+      row[i] = mrow[i];
+    }
     return row;
   }
 
