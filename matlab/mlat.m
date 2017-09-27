@@ -5,25 +5,20 @@ classdef mlat
   methods (Access = public ,Static)
     function result_table = gdescent(anchors_in, ranges_in, varargin)
       % varargin: 'bounds_in', 'n_trial', 'alpha', 'time_threshold'
-      bounds_in = [0, 0, 0];
+      bounds_in = [];
       n_trial = 100;
       alpha = 0.001;
-      time_threshold = nan;
-      if length(varargin) >= 2
-        for i = 1:2:length(varargin)
-          switch (varargin{i})
-            case 'bounds'
-              bounds_in = varargin{i+1};
-            case 'trial'
-              n_trial = varargin{i+1};
-            case 'alpha'
-              alpha = varargin{i+1};
-            case 'time'
-              time_threshold = varargin{i+1};
-          end
-          if isnan(time_threshold)
-            time_threshold = 1 / n_trial;
-          end
+      time_threshold = 1/ n_trial;
+      for i = 1:2:length(varargin{1})
+        switch (varargin{1}{i})
+          case 'bounds'
+            bounds_in = varargin{1}{i+1};
+          case 'trial'
+            n_trial = varargin{1}{i+1};
+          case 'alpha'
+            alpha = varargin{1}{i+1};
+          case 'time'
+            time_threshold = varargin{1}{i+1};
         end
       end
 
