@@ -40,13 +40,13 @@ int main() {
   // If anchors are in the same plane, i.e., all anchors have the same (similar)
   // coordinate of at least one axes, you MUST define search space boundary
   // So, defining search space boundary is all up to you
-  ArrayXXd bounds(2, anchors.rows());
-  for (int i = 0; i < anchors.rows(); i++) {
+  ArrayXXd bounds(2, anchors.cols());
+  for (int i = 0; i < anchors.cols(); i++) {
     bounds(0, i) = anchors.col(i).minCoeff(); // minimum boundary of ith axis
     bounds(1, i) = anchors.col(i).maxCoeff(); // maximum boundary of ith axis
   }
   // hard coded minimum height (0 m) of search boundary
-  bounds(0, anchors.rows() - 1) = 0;
+  bounds(0, anchors.cols() - 1) = 0;
 
   auto time_start = steady_clock::now();
   MLAT::GdescentResult gdescent_result = MLAT::mlat(anchors,
