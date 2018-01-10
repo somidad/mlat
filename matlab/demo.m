@@ -25,8 +25,8 @@ end
 % If anchors are in the same plane, i.e., all anchors have the same (similar)
 % coordinate of at least one axes, you MUST define search space boundary
 % So, defining search space boundary is all up to you
-bounds = [];
-for i = 1:size(anchors, 1)
+bounds = nan(2, size(anchors, 2));
+for i = 1:size(anchors, 2)
   bounds(0, i) = min(anchors(:, i)); % minimum boundary of ith axis
   bounds(1, i) = max(anchors(:, i)); % maximum boundary of ith axis
 end
