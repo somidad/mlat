@@ -34,10 +34,24 @@ int main() {
     ranges(i) = (VectorXd(anchors.row(i)) - node).norm();
     ranges_with_error(i) = ranges(i) + 2 * error * (randunif(rande) - 0.5);
   }
+  // TODO: You need to define search space boundary to prevent UNEXPECTED RESULT
+  // If not, search space boundary is defined as a cube constrained to
+  // minimum and maximum coordinates of x, y, z of anchors
+  // If anchors are in the same plane, i.e., all anchors have the same (similar)
+  // coordinate of at least one axes, you MUST define search space boundary
+  // So, defining search space boundary is all up to you
+  ArrayXXd bounds(2, anchors.rows());
+  for (int i = 0; i < anchors.rows(); i++) {
+    bounds(0, i) = anchors.col(i).minCoeff(); // minimum boundary of ith axis
+    bounds(1, i) = anchors.col(i).maxCoeff(); // maximum boundary of ith axis
+  }
+  // hard coded minimum height (0 m) of search boundary
+  bounds(0, anchors.rows() - 1) = 0;
 
   auto time_start = steady_clock::now();
   MLAT::GdescentResult gdescent_result = MLAT::mlat(anchors,
-                                                    ranges_with_error);
+                                                    ranges_with_error,
+                                                    bounds);
   auto time_end = steady_clock::now();
   auto time_elapsed = duration_cast<milliseconds>(time_end - time_start);
   cout << "Finished in " << time_elapsed.count() << " ms" << endl;
@@ -58,4 +72,3 @@ int main() {
 
   return 0;
 }
-
