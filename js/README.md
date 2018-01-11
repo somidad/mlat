@@ -27,6 +27,30 @@ This is a JavaScript script for 2D or 3D multilateration using gradient descent.
     ranges[i] = d(anchors[i], node)
     ranges_with_error[i] = ranges[i] + 2 * error * (Math.random() - 0.5)
   }
+  // TODO: You need to define search space boundary to prevent UNEXPECTED RESULT
+  // If not, search space boundary is defined as a cube constrained to
+  // minimum and maximum coordinates of x, y, z of anchors
+  // If anchors are in the same plane, i.e., all anchors have the same (similar)
+  // coordinate of at least one axes, you MUST define search space boundary
+  // So, defining search space boundary is all up to you
+  var bounds =[];
+  for (var i = 0; i < 2; i++) {
+    var row = []
+    for (var j = 0; j < numeric.dim(anchors)[1]; j++) {
+      row.push(0)
+    }
+    bounds.push(row)
+  }
+  for (var i = 0; i < numeric.dim(anchors)[1]; i++) {
+    var column = []
+    for (var j = 0; j < numeric.dim(anchors)[0]; j++) {
+      column.push(anchors[j][i])
+    }
+    bounds[0][i] = Math.min.apply(null, column) // minimum boundary of ith axis
+    bounds[1][i] = Math.max.apply(null, column) // maximum boundary of ith axis
+  }
+  // hard coded minimum height (0 m) of search boundary
+  bounds[0][numeric.dim(anchors)[1] - 1] = 0;
 
   gdescent_result = mlat(anchors, ranges_with_error)
 
