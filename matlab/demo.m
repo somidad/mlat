@@ -27,13 +27,13 @@ end
 % So, defining search space boundary is all up to you
 bounds = nan(2, size(anchors, 2));
 for i = 1:size(anchors, 2)
-  bounds(0, i) = min(anchors(:, i)); % minimum boundary of ith axis
-  bounds(1, i) = max(anchors(:, i)); % maximum boundary of ith axis
+  bounds(1, i) = min(anchors(:, i)); % minimum boundary of ith axis
+  bounds(2, i) = max(anchors(:, i)); % maximum boundary of ith axis
 end
 % hard coded minimum height (0 m) of search boundary
-bounds(0, end) = 0;
+bounds(1, end) = 0;
 
-[estimator, result_table] = mlat.do_mlat(anchors, ranges_with_error,
+[estimator, result_table] = mlat.do_mlat(anchors, ranges_with_error, ...
                                          'bounds', bounds);
 
 fprintf('Anchors');
