@@ -55,23 +55,26 @@ function gdescent(anchors_in, ranges_in, bounds_in,
   var gdescent_result = new GdescentResult(n_trial, dim)
 
   if (!bounds_in) {
-    var bounds_in = [new_vector(dim, 0)]
+    var bounds_temp = new_matrix([numeric.dim(anchors_in)[0], dim])
+  } else {
+    if (numeric.dim(bounds_in).length != 2
+        || numeric.dim(bounds_in)[1] != dim) {
+      throw "Bounds matrix must have the same column size with the Anchors"
+    }
+    var bounds_temp = new_matrix([numeric.add(numeric.dim(anchors_in),
+      numeric.dim(bounds_in))[0],
+      dim])
   }
-  if (numeric.dim(bounds_in).length != 2
-      || numeric.dim(bounds_in)[1] != dim) {
-    throw "Bounds matrix must have the same column size with the Anchors"
-  }
-  var bounds_temp = new_matrix([numeric.add(numeric.dim(anchors_in),
-                                           numeric.dim(bounds_in))[0],
-                               dim])
   for (var i = 0; i < n; i++) {
     for (var j = 0; j < dim; j++) {
       bounds_temp[i][j] = anchors_in[i][j]
     }
   }
-  for (var i = 0; i < numeric.dim(bounds_in)[0]; i++) {
-    for (var j = 0; j < dim; j++) {
-      bounds_temp[n + i][j] = bounds_in[i][j]
+  if (bounds_in) {
+    for (var i = 0; i < numeric.dim(bounds_in)[0]; i++) {
+      for (var j = 0; j < dim; j++) {
+        bounds_temp[n + i][j] = bounds_in[i][j]
+      }
     }
   }
   var bounds = new_matrix([2, dim])
@@ -88,6 +91,8 @@ function gdescent(anchors_in, ranges_in, bounds_in,
       }
     }
   }
+  console.log('Bounds')
+  console.log(bounds)
 
   if (time_threshold== 0) {
     var time_threshold = 1 / n_trial
